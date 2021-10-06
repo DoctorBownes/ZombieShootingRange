@@ -14,18 +14,18 @@ public class Player : MonoBehaviour
     public Image MainIcon;
     public Image LeftIcon;
     public Image RightIcon;
+    public Texture2D cursor;
 
     private Vector3 _movement;
     private Vector3 _rotation;
-    public GameObject myCamera;
-    private int InvPos;
+    public Camera myCamera;
 
     private void Start()
     {
         controller = gameObject.GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        myCamera = GameObject.Find("Main Camera");
-        InvPos = 0;
+        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.Confined;
+        myCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     void Update()
@@ -47,6 +47,13 @@ public class Player : MonoBehaviour
         _rotation.y = Mathf.Clamp(_rotation.y, -90f, 90f);
         myCamera.transform.localRotation = Quaternion.Euler(_rotation.y, 0f, 0f);
         transform.localRotation = Quaternion.Euler(0f, _rotation.x, 0f);
+        RaycastHit hit;
+        Ray ray = myCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit, 100f))
+        {
+            Debug.Log("You have hit: " + hit.transform.name);
+        }
 
     }
     private void FixedUpdate()
