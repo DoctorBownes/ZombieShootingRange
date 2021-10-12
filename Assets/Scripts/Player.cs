@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public Image LeftIcon;
     public Image RightIcon;
     public Texture2D cursor;
+    public GameObject zombie;
 
     private Vector3 _movement;
     private Vector3 _rotation;
@@ -52,7 +53,16 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100f))
         {
-            Debug.Log("You have hit: " + hit.transform.name);
+            //Debug.Log("You have hit: " + hit.transform.name);
+            if (Input.GetButtonUp("Fire1"))
+            {
+                hit.transform.gameObject.GetComponentInParent<Zombie>().Damage();
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            Instantiate(zombie, new Vector3(-1.31f, 1.624f, 34.4f), Quaternion.Euler(new Vector3(0,180,0)));
         }
 
     }
