@@ -8,14 +8,22 @@ public class Player : MonoBehaviour
     private CharacterController controller;
     public bool groundedPlayer;
     public float playerSpeed = 2.0f;
-    public float jumpHeight = 1.0f;
     public float RotationSpeed = 1.0f;
-    public Vector3 itemPosition;
-    public Image MainIcon;
-    public Image LeftIcon;
-    public Image RightIcon;
     public Texture2D cursor;
     public GameObject zombie;
+    public GameObject UI;
+    
+    public Text healthText;
+    public Text ScoreText;
+    public int maxhealth = 3;
+    public int health;
+
+    public int Score = 0;
+
+    [SerializeField] private Text textAmmo;
+    public int maxAmmo = 8;
+    public int ammo;
+    public AudioSource gunShot;
 
     private Vector3 _movement;
     private Vector3 _rotation;
@@ -23,6 +31,15 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Score = 0;
+        health = maxhealth;
+        ammo = maxAmmo;
+        textAmmo.text = ammo + " / " + maxAmmo;
+        healthText.text = health + " ";
+        ScoreText.text = "Score: "+ Score;
+        gunShot = GetComponent<AudioSource>();
+        
+
         controller = gameObject.GetComponent<CharacterController>();
         Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Confined;
@@ -51,21 +68,43 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         Ray ray = myCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, 100f))
-        {
-            //Debug.Log("You have hit: " + hit.transform.name);
-            if (Input.GetButtonUp("Fire1"))
-            {
-                hit.transform.gameObject.GetComponentInParent<Zombie>().Damage();
+        
+        //Debug.Log("You have hit: " + hit.transform.name);
+        //Shoot, play sound, and reload.
+         if (Input.GetButtonUp("Fire1"))
+         {               
+            if (ammo > 0){
+                    ammo -= 1;
+                    gunShot.Play();
+                    if (Physics.Raycast(ray, out hit, 500f))
+                    {
+                        hit.transform.gameObject.GetComponentInParent<Zombie>().Damage();
+                    }
+            } else {
+                ammo = maxAmmo;
             }
-        }
-
-        if (Input.GetKeyUp(KeyCode.Z))
-        {
-            Instantiate(zombie, new Vector3(-1.31f, 1.624f, 34.4f), Quaternion.Euler(new Vector3(0,180,0)));
+            textAmmo.text = ammo + " / " + maxAmmo;
+            
         }
 
     }
+
+    public void Dmg()
+    {
+        health -= 1;
+        healthText.text = health + " ";
+        if (health <= 0){
+            Death();
+        }
+    }
+
+    public void Death()
+    {
+        Time.timeScale = 0f;
+        UI.GetComponentInParent<Menu>().ScoreText.text = Score.ToString();
+        UI.SetActive(true);
+    }
+
     private void FixedUpdate()
     {
         transform.Rotate(_rotation * Time.fixedDeltaTime * RotationSpeed);

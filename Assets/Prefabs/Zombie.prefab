@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2625801148519992855}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,16 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4151ce77fa2f8744fa5d97198de69125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myAnimation: {fileID: 3920987480522408033}
-  controller: {fileID: 2625801148519992855}
-  player: {fileID: 0}
   target: {fileID: 0}
   hp: 0
   speed: 3
+  attackSpeed: 100
+  WanderTimer: 10
   hitColor:
     serializedVersion: 2
     rgba: 526591
   normal: {fileID: 2100000, guid: 424a2c009f93c4145af39c6aad245e4f, type: 2}
+  player: {fileID: 0}
 --- !u!143 &2625801148519992855
 CharacterController:
   m_ObjectHideFlags: 0
