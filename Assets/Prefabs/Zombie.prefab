@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1253397263628794238}
   - component: {fileID: 8668590935374503078}
   - component: {fileID: 800818912313869410}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,8 +92,8 @@ GameObject:
   - component: {fileID: 3403428941676450991}
   - component: {fileID: 3920987480522408033}
   - component: {fileID: 2625801148519992852}
-  - component: {fileID: 2625801148519992855}
-  m_Layer: 0
+  - component: {fileID: 5618374033289524802}
+  m_Layer: 3
   m_Name: Zombie
   m_TagString: Zombie
   m_Icon: {fileID: 0}
@@ -147,18 +147,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4151ce77fa2f8744fa5d97198de69125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   hp: 0
-  speed: 3
-  attackSpeed: 100
-  WanderTimer: 10
+  scorePoints: 10
   hitColor:
     serializedVersion: 2
     rgba: 526591
   normal: {fileID: 2100000, guid: 424a2c009f93c4145af39c6aad245e4f, type: 2}
+  deathParticles: {fileID: 5505315908850424898, guid: 4865f40558c120645bc4eba8e0124b20, type: 3}
   player: {fileID: 0}
---- !u!143 &2625801148519992855
-CharacterController:
+--- !u!65 &5618374033289524802
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -168,12 +166,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2800102710438286805
 GameObject:
@@ -186,7 +179,7 @@ GameObject:
   - component: {fileID: 1409547413968691011}
   - component: {fileID: 5098590004123492440}
   - component: {fileID: 7435012152801531453}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeftFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +260,7 @@ GameObject:
   - component: {fileID: 7384732738018148399}
   - component: {fileID: 271989756702956613}
   - component: {fileID: 1327284488769775038}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +341,7 @@ GameObject:
   - component: {fileID: 6940834463607816198}
   - component: {fileID: 6940834463607816200}
   - component: {fileID: 6940834463607816201}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +422,7 @@ GameObject:
   - component: {fileID: 6940834464156732333}
   - component: {fileID: 6940834464156732335}
   - component: {fileID: 6940834464156732332}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RightFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

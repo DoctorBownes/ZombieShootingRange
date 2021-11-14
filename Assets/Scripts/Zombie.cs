@@ -5,25 +5,33 @@ using UnityEngine.AI;
 
 public class Zombie : MonoBehaviour
 {
-    [SerializeField] private GameObject target;
-    [SerializeField] private int hp = 100;
-    [SerializeField] private float speed = 1.5f;
-    [SerializeField] private int attackSpeed = 100;
-    [SerializeField] private int WanderTimer = 10;
+    private GameObject target;
+    [SerializeField] float hp = 100f;
+    private float speed = 3f;
+    private float attackSpeed = 30f;
+    private float wanderTimer = 3f;
+    private float scoreMultiply = 0.005f;
+    [SerializeField] int scorePoints = 10;
     [SerializeField] private Color32 hitColor;
     [SerializeField] private Material normal;
-    [SerializeField] public Player player;
+    [SerializeField] private GameObject deathParticles;
+    public Player player;
     public RaycastHit hit;
 
-    private int aSpeed;
+    private float aSpeed;
 
     private string state = "Wander";
     void Start()
     {
+        speed += Random.Range(-2f, 2f);
         aSpeed = attackSpeed;
         target = GameObject.Find("Target");
         player = GameObject.Find("Player").GetComponent<Player>();
         transform.LookAt(target.transform);
+
+        hp += player.Score * scoreMultiply;
+        speed += player.Score * scoreMultiply;
+
     }
 
     // Update is called once per frame
@@ -44,20 +52,30 @@ public class Zombie : MonoBehaviour
     }
     void Wander()
     {
-        WanderTimer -= 1;
-        if (WanderTimer < 0)
+        wanderTimer -= 1;
+        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, -speed * Time.deltaTime);
+        if (wanderTimer < 0)
         {
             state = "Walk";
         }
     }
 
     void Walk()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
-        if (transform.position == target.transform.position)
-        {
-            state = "Attack";
+    {   
+        
+        Ray ray = new Ray(transform.position, transform.forward);
+        LayerMask mask = LayerMask.GetMask("Zombie");
+        if (Physics.Raycast(ray, 0.5f, mask)){
+            wanderTimer = Random.Range(3, 10);
+            state = "Wander";
+        } else{
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            if (transform.position == target.transform.position)
+            {           
+                state = "Attack";
+            }
         }
+        
     }
 
     void Attack()
@@ -71,12 +89,13 @@ public class Zombie : MonoBehaviour
 
     public void Damage()
     {
-        hp -= 50;
+        hp -= 5f;
         // StartCoroutine(DamageReaction());
         if (hp <= 0)
         {
-            player.Score += 10;
+            player.Score += scorePoints;
             player.ScoreText.text = "Score: " + player.Score;
+            Destroy(Instantiate(deathParticles, transform.position, Quaternion.identity) as GameObject, 2f);
             Destroy(gameObject);
         }
     }

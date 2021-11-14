@@ -17,6 +17,7 @@ public class Menu : MonoBehaviour
     {
         Time.timeScale = 0f;
         player = GameObject.Find("Player").GetComponent<Player>();
+
     }
 
     public void StartGame()
@@ -31,6 +32,7 @@ public class Menu : MonoBehaviour
     {
         BeginButton.SetActive(false);
         Time.timeScale = 1f;
+        player.gameStart = true;
     }
 
     public void QuitGame()
